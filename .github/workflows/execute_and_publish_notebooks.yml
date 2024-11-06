@@ -1,8 +1,10 @@
 # .github/workflows/execute_and_publish_notebooks.yml
 
-name: Execute and Publish Notebooks
+name: Execute and Publish Selected Notebooks
 
 on:
+  schedule:
+    - cron: "0 */10 * * *"  # runs workflow every 10 minutes
   push:
     branches:
       - main
@@ -26,20 +28,36 @@ jobs:
         run: |
           pip install nbconvert notebook pandas numpy seaborn
 
-      - name: Execute Notebooks
-        run: |
-          for notebook in $(find . -name "*.ipynb"); do
-            jupyter nbconvert --to notebook --execute "$notebook" --inplace
-          done
 
+      - name: Monitor Notebooks for Changes
+        run: |
+          bash ./monitor_notebooks.sh #This will run and periodically check for changes
+          
+
+      - name: Execute Modified Notebooks
+        if: success()
+        run: |
+          if [ -s modified_notebooks.txt ]; then
+            for notebook in $(cat modified_notebooks.txt); do
+              jupyter nbconvert --to notebook --execute "$notebook" --inplace
+            done
+          else
+            echo "No modified notebooks to execute."
+          fi
+          
       - name: Publish Notebooks
         if: success()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
-          git add ./*.ipynb
-          git commit -m "Update executed notebooks"
-          git push origin main
+          if [ -s modfied_notebooks>txt ]; then
+            git config --global user.name 'github-actions'
+            git config --global user.email 'github-actions@github.com'
+            git add ./*.ipynb
+            git commit -m "Update executed notebooks"
+            git push origin main
+          else
+            echo "No modified notebooks to publish"
+
+          fi
 
