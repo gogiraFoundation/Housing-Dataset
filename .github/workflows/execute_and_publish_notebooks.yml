@@ -24,7 +24,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install nbconvert notebook
+          pip install nbconvert notebook pandas numpy seaborn
 
       - name: Execute Notebooks
         run: |
