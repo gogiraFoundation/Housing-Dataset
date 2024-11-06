@@ -17,10 +17,32 @@ git commit -m "Committing local changes to 'working_tree' branch"
 # Show the status
 git status
 
-# Compare changes between 'working_tree' and 'main'
-echo "Comparing changes between 'working_tree' and 'main'..."
-git fetch origin main
-git diff working_tree origin/main
+
+# List of branches to compare
+branches=("main" "test" "feature-branch")
+
+# Base branch for comparison
+base_branch="working_tree"
+
+# Loop through each branch and compare changes
+for branch in "${branches[@]}"; do
+    # Check if the branch exists either locally or remotely
+    if git rev-parse --verify "$branch" >/dev/null 2>&1 || git rev-parse --verify "origin/$branch" >/dev/null 2>&1; then
+        # Compare changes between base_branch and other branches
+        echo "Comparing changes between '$base_branch' and '$branch'..."
+        
+        # Fetch the latest changes from the remote
+        git fetch origin $branch
+        
+        # Compare changes between the base branch and the current branch
+        git diff $base_branch..origin/$branch
+        
+        # Log the changes for review
+        echo "======================"
+    else
+        echo "Warning: Branch '$branch' not found. Skipping comparison."
+    fi
+done
 
 echo "Script completed."
- 
+
