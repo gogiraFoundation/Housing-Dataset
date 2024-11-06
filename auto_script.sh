@@ -29,8 +29,12 @@ if [ "$current_email" == "$Input_email" ]; then
 	echo "Local and Remote up-to-date"
 
 
+	echo "Öpening Jupyter NoteBook..."
+	jupyter notebook
+
+	
+	
 	
 else
     echo "Email does not match. Exiting."
 fi
-
