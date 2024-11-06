@@ -1,0 +1,33 @@
+jobs:
+  execute-and-publish-notebooks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: |
+          pip install nbconvert notebook
+
+      - name: Execute Notebooks
+        run: |
+          for notebook in $(find . -name "*.ipynb"); do
+            jupyter nbconvert --to notebook --execute "$notebook" --inplace
+          done
+
+      - name: Publish Notebooks
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add ./*.ipynb
+          git commit -m "Update executed notebooks"
+          git push origin main
+
