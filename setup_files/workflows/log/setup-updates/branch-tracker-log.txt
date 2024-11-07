@@ -1,0 +1,23 @@
+Running branch comparison at Thu  7 Nov 2024 16:11:20 WAT
+Comparing changes between working_tree and test...
+Files changed between working_tree and test:
+
+Total number of changes:        1
+======================
+Comparing changes between working_tree and feature-branch...
+Files changed between working_tree and feature-branch:
+.DS_Store
+setup_files/workflows/branch_tracker.sh
+setup_files/workflows/deployment.sh
+setup_files/workflows/working_tree.sh
+Total number of changes:        4
+======================
+Comparing changes between working_tree and main...
+Files changed between working_tree and main:
+.DS_Store
+.github/workflows/execute_and_publish_notebooks.yml
+setup_files/workflows/branch_tracker.sh
+setup_files/workflows/deployment.sh
+setup_files/workflows/working_tree.sh
+Total number of changes:        5
+======================
