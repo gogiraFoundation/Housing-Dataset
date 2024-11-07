@@ -1,0 +1,25 @@
+name: Branch Tracker
+
+on: 
+  schedule:
+    - cron: '0 12 * * *'  # Runs daily at noon UTC
+  workflow_dispatch:  # Allows manual triggers
+
+jobs:
+  track-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Git and Bash
+        run: sudo apt-get install -y git bash
+
+      - name: Compare and Track branches
+        run: |
+          # Run the branch-tracker.sh script
+          ./branch_tracker.sh
+        shell: bash
+      - name: Finish
+        run: echo "Comparison complete. Logs saved in 'log/' directory."
+
