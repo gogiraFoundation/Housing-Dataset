@@ -1,5 +1,3 @@
-# .github/workflows/execute_and_publish_notebooks.yml
-
 name: Execute and Publish Selected Notebooks
 
 on:
@@ -28,11 +26,9 @@ jobs:
         run: |
           pip install nbconvert notebook pandas numpy seaborn
 
-
       - name: Monitor Notebooks for Changes
         run: |
-          bash ./monitor_notebooks.sh #This will run and periodically check for changes
-          
+          bash ./setup_files/workflows/monitor_notebooks.sh
 
       - name: Execute Modified Notebooks
         if: success()
@@ -50,14 +46,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ -s modfied_notebooks>txt ]; then
+          if [ -s modified_notebooks.txt ]; then
             git config --global user.name 'github-actions'
             git config --global user.email 'github-actions@github.com'
             git add ./*.ipynb
             git commit -m "Update executed notebooks"
             git push origin main
           else
-            echo "No modified notebooks to publish"
-
+            echo "No modified notebooks to publish."
           fi
-
