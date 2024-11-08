@@ -1,20 +1,50 @@
-
-
 name: Notebook Deployment and Monitoring
-
-
 
 on:
   push:
     branches:
-    - main
+      - main
   schedule:
-    - cron: '0 24 * * *' # runs one daily
+    - cron: '0 * * * *' # Runs every hour, adjust as needed
 
 jobs:
   publish_notebooks:
     runs-on: ubuntu-latest
     name: Publish Notebooks
     steps:
-      - name:     check out the repository
-      
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt # if needed for notebook processing
+
+      - name: Run publish notebooks script
+        run: bash ./scripts/publish_notebooks.sh
+
+  monitor_health:
+    runs-on: ubuntu-latest
+    name: Monitor Notebook Health
+    needs: publish_notebooks
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Run health monitoring script
+        run: bash ./scripts/monitor_notebooks_health.sh
+
+  redundancy_check:
+    runs-on: ubuntu-latest
+    name: Redundancy Check
+    if: failure() # Only runs if any previous job fails
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Run redundancy script
+        run: bash ./scripts/redundancy_check.sh
