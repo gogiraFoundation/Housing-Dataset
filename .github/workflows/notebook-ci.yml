@@ -26,7 +26,7 @@ jobs:
       - name: Execute Notebooks
         continue-on-error: true  # Allows the workflow to continue even if one notebook fails
         run: |
-          dir_path="./published"  # Set the directory path where notebooks are located
+          dir_path="published_notebooks/"  # Set the directory path where notebooks are located
           for notebook in $(find "$dir_path" -name "*.ipynb"); do
             echo "Executing $notebook..."
             jupyter nbconvert --to notebook --execute "$notebook" --inplace || echo "$notebook failed to execute"
