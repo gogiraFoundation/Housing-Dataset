@@ -9,7 +9,8 @@ mkdir -p "$publish_dir"
 echo "Publishing notebooks..."
 
 # List of notebooks to publish
-notebooks=("notebook1.ipynb" "notebook2.ipynb" "notebook3.ipynb")
+notebooks=("uk_local_housing_data_analysis.ipynb" "uk_local_authorities_housing_project_completed.ipynb" "uk_local_authorities_housing_project_started.ipynb")
+
 
 # Loop through each notebook and publish it
 for notebook in "${notebooks[@]}"; do
