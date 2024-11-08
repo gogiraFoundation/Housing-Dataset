@@ -11,23 +11,34 @@ log_file="log/setup-updates/branch-tracker-log.txt"
 mkdir -p "$(dirname "$log_file")"  # Ensure log directory exists
 > "$log_file"  # Clear previous log entries
 
+# Function to check if a branch exists locally or remotely
+branch_exists() {
+    git show-ref --verify --quiet "refs/heads/$1" || git show-ref --verify --quiet "refs/remotes/origin/$1"
+}
+
 # Define a function to log changes at timed intervals
 log_changes() {
     while true; do
         echo "Running branch comparison at $(date)" >> "$log_file"
-        
+
+        # Check if the base branch exists
+        if ! branch_exists "$base_branch"; then
+            echo "Error: Base branch '$base_branch' not found. Please check the branch name." | tee -a "$log_file"
+            exit 1
+        fi
+
         # Loop through each branch and compare with base_branch
         for branch in "${branches[@]}"; do
             echo "Comparing changes between $base_branch and $branch..." >> "$log_file"
 
             # Check if the branch exists locally or remotely before proceeding
-            if git show-ref --verify --quiet "refs/heads/$branch" || git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+            if branch_exists "$branch"; then
                 # Fetch the latest changes from the remote branch if it exists remotely
                 git fetch origin "$branch" >/dev/null 2>&1
 
                 # Get the list of changed files and count
                 changes=$(git diff --name-only "$base_branch".."$branch")
-                num_changes=$(echo "$changes" | wc -l)
+                num_changes=$(echo "$changes" | grep -c '^')
 
                 # Log the changes
                 echo "Files changed between $base_branch and $branch:" >> "$log_file"
@@ -53,7 +64,6 @@ log_changes() {
     done
 }
 
-#start operation
-echo "starting operation"
-# Run the function
-log_changes
+# Start operation
+echo "Starting branch comparison operation"
+log_changes  # Run the function
