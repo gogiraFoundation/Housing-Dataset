@@ -48,3 +48,4 @@ jobs:
 
       - name: Run redundancy script
         run: bash ./setup_files/workflows/redundancy_check.sh
+
