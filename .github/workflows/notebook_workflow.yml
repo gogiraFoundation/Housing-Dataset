@@ -1,0 +1,20 @@
+
+
+name: Notebook Deployment and Monitoring
+
+
+
+on:
+  push:
+    branches:
+    - main
+  schedule:
+    - cron: '0 24 * * *' # runs one daily
+
+jobs:
+  publish_notebooks:
+    runs-on: ubuntu-latest
+    name: Publish Notebooks
+    steps:
+      - name:     check out the repository
+      
