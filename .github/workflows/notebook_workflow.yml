@@ -25,7 +25,7 @@ jobs:
           pip install -r requirements.txt # if needed for notebook processing
 
       - name: Run publish notebooks script
-        run: bash ./scripts/publish_notebooks.sh
+        run: bash ./setup_files/workflows/scripts/bash/publish_notebooks.sh
 
   monitor_health:
     runs-on: ubuntu-latest
@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run health monitoring script
-        run: bash ./scripts/monitor_notebooks_health.sh
+        run: bash ./setup_files/workflows/monitor_notebooks_health.sh
 
   redundancy_check:
     runs-on: ubuntu-latest
@@ -47,4 +47,4 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run redundancy script
-        run: bash ./scripts/redundancy_check.sh
+        run: bash ./setup_files/workflows/redundancy_check.sh
