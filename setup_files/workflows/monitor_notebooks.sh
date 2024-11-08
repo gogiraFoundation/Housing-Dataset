@@ -1,9 +1,11 @@
-
-
 #!/bin/bash
 
 # List of notebooks to monitor changes
 notebooks=("uk_local_housing_data_analysis.ipynb" "uk_local_authorities_housing_project_completed.ipynb" "uk_local_authorities_housing_project_started.ipynb")
+
+# Define path to log file
+log_file="log/setup-updates/modified_notebooks.txt"
+mkdir -p "$(dirname "$log_file")"  # Ensure log directory exists
 
 # Timer settings 
 interval=300
@@ -26,7 +28,7 @@ while true; do
     # If any notebooks have been modified, write to a file for publishing
     if [ ${#modified_notebooks[@]} -gt 0 ]; then
         echo "Modified notebooks found. Updating the list for publishing."
-        echo "${modified_notebooks[@]}" > modified_notebooks.txt
+        echo "${modified_notebooks[@]}" > "$log_file"
     else
         echo "No modified notebooks found. No update required."
     fi
