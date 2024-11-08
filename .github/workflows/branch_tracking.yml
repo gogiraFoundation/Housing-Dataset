@@ -18,7 +18,7 @@ jobs:
       - name: Compare and Track branches
         run: |
           # Run the branch-tracker.sh script
-          ./branch_tracker.sh
+          ./setup_files/workflows/branch_tracker.sh
         shell: bash
       - name: Finish
         run: echo "Comparison complete. Logs saved in 'log/' directory."
