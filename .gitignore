@@ -2,7 +2,11 @@
 .gitignore
 .DS_Store
 <<<<<<< HEAD
+<<<<<<< HEAD
 .DS_Store
+=======
+setup_files/.DS_Store
+>>>>>>> e8677d6 (ünstaged data)
 =======
 setup_files/.DS_Store
 >>>>>>> e8677d6 (ünstaged data)
