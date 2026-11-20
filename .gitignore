@@ -10,3 +10,6 @@ setup_files/.DS_Store
 =======
 setup_files/.DS_Store
 >>>>>>> e8677d6 (ünstaged data)
+
+.env.*
+!.env.example
